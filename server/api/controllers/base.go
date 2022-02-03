@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-
-	"http_monitoring/api/models"
+	"server/api/models"
 
 	"github.com/gorilla/mux"
 

@@ -1,6 +1,6 @@
 package main
 
-import "http_monitoring/api"
+import "server/api"
 
 func main() {
 	api.Run()

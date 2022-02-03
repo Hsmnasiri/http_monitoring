@@ -1,6 +1,6 @@
 package controllers
 
-import "http_monitoring/api/middlewares"
+import "server/api/middlewares"
 
 func (s *Server) initializeRoutes() {
 

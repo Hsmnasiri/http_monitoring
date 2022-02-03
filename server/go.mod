@@ -1,4 +1,4 @@
-module http_monitoring
+module server
 
 go 1.17
 
