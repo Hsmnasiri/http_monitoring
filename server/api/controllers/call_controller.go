@@ -3,9 +3,10 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"http_monitoring/api/models"
-	"http_monitoring/api/utils/formaterror"
-	"http_monitoring/api/utils/responses"
+	"server/api/models"
+	"server/api/utils/formaterror"
+	"server/api/utils/responses"
+
 	"io/ioutil"
 	"net/http"
 	"strconv"

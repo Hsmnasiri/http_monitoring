@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"http_monitoring/api/utils/responses"
 	"net/http"
+	"server/api/utils/responses"
 )
 
 func (server *Server) Home(w http.ResponseWriter, r *http.Request) {
