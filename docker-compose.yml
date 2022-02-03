@@ -5,8 +5,8 @@ services:
     image: postgres
     restart: on-failure
     environment:
-      POSTGRES_USER: heapifo
-      POSTGRES_PASSWORD: he@p!fo
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     networks:
       - main_net
     volumes:
@@ -15,7 +15,7 @@ services:
       - "5432:5432"
     
   api:
-    build: ./server/
+    build: ./api/
     networks:
       - main_net
     depends_on:

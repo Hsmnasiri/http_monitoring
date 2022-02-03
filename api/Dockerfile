@@ -1,26 +1,32 @@
 FROM golang:1.16-buster as build
 
 ENV GOPROXY http://proxy.golang.org
+# ENV GO111MODULE=on
 
-WORKDIR /api
+
+WORKDIR /app
 
 COPY go.mod ./
 COPY go.sum ./
 
+# RUN rm $GOPATH/go.mod
+
 RUN go mod download
 
-COPY *.go ./
+COPY . .
 
-RUN go build -o /bin/app
+# RUN mkdir bin
+
+RUN go build -o /docker-gs-ping
+
 
 FROM alpine
 RUN apk add --no-cache bash
-RUN apk add --no-cache ca-certificates
 
-WORKDIR /bin/
+WORKDIR /app
 
-COPY --from=build /bin/app .
+COPY --from=build /app .
 
 EXPOSE 3000
 
-CMD exec /bin/app
+CMD exec /app

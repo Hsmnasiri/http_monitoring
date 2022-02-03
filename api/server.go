@@ -2,9 +2,9 @@ package api
 
 import (
 	"fmt"
+	"github.com/Hsmnasiri/http_monitoring/api/controllers"
 	"log"
 	"os"
-	"server/api/controllers"
 
 	"github.com/joho/godotenv"
 )
