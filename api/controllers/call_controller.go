@@ -53,14 +53,14 @@ func (server *Server) CreateCall(w http.ResponseWriter, r *http.Request) {
 
 func (server *Server) GetCalls(w http.ResponseWriter, r *http.Request) {
 
-	url := models.EndPointCalls{}
+	epc := models.EndPointCalls{}
 
-	urls, err := url.FindAllCalls(server.DB)
+	epcs, err := epc.FindAllCalls(server.DB)
 	if err != nil {
 		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
 	}
-	responses.JSON(w, http.StatusOK, urls)
+	responses.JSON(w, http.StatusOK, epcs)
 }
 
 func (server *Server) GetCall(w http.ResponseWriter, r *http.Request) {
