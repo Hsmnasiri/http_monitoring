@@ -10,7 +10,7 @@ import (
 )
 
 type Urls struct {
-	ID        uint64    `gorm:"primary_key;auto_increment" json:"id"`
+	ID        uint32   `gorm:"primary_key;auto_increment" json:"id"`
 	Name, URL string
 	Type      string          `gorm:"DEFAULT:'GET'"`
 	Calls     []EndPointCalls `gorm:"ForeignKey:EndPointID"`
