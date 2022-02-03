@@ -62,6 +62,18 @@ func (server *Server) GetCalls(w http.ResponseWriter, r *http.Request) {
 	}
 	responses.JSON(w, http.StatusOK, epcs)
 }
+func (server *Server) GetCallsByTime(w http.ResponseWriter, r *http.Request) {
+
+	epc := models.EndPointCalls{}
+	vars := mux.Vars(r)
+
+	epcs, err := epc.FindCallsByTime(server.DB,vars["urlId"],vars["StartTime"],vars["EndTime"])
+	if err != nil {
+		responses.ERROR(w, http.StatusInternalServerError, err)
+		return
+	}
+	responses.JSON(w, http.StatusOK, epcs)
+}
 
 func (server *Server) GetCall(w http.ResponseWriter, r *http.Request) {
 

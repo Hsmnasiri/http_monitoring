@@ -57,6 +57,16 @@ func (epc *EndPointCalls) FindAllCalls(db *gorm.DB) (*[]EndPointCalls, error) {
 	return &Calls, err
 }
 
+func (epc *EndPointCalls) FindCallsByTime(db *gorm.DB,urlId uint32,StartTime time.Time,EndTime time.Time ) (*[]EndPointCalls, error) {
+	var err error
+	Calls := []EndPointCalls{}
+	err=db.Where("created_at BETWEEN ? AND ?", StartTime, EndTime).Find(&Calls).Error
+	if err != nil {
+		return &[]EndPointCalls{}, err
+	}
+	return &Calls, err
+}
+
 func (epc *EndPointCalls) FindCallByID(db *gorm.DB, uid uint32) (*EndPointCalls, error) {
 	var err error
 	err = db.Debug().Model(EndPointCalls{}).Where("id = ?", uid).Take(&epc).Error
