@@ -1,4 +1,4 @@
-module http_monitoring
+module api
 
 go 1.17
 

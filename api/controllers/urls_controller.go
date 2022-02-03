@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"http_monitoring/api/auth"
-	"http_monitoring/api/models"
-	"http_monitoring/api/utils/formaterror"
-	"http_monitoring/api/utils/responses"
 	"io/ioutil"
 	"net/http"
+	"server/api/auth"
+	"server/api/models"
+	"server/api/utils/formaterror"
+	"server/api/utils/responses"
 	"strconv"
 
 	"github.com/gorilla/mux"
@@ -193,3 +193,26 @@ func (server *Server) Deleteurl(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Entity", fmt.Sprintf("%d", pid))
 	responses.JSON(w, http.StatusNoContent, "")
 }
+
+// func (server *Server) IncrementFailed(url *models.Urls) error {
+// 	url.FailedTimes += 1
+// 	return server.Updateurl(url)
+// }
+
+
+// func (server *Server) IncrementSuccess(url *models.Urls) error {
+// 	url.SuccessTimes += 1
+// 	return server.UpdateUrl(url)
+// }
+
+// func (server *Server) AddRequest(req *models.EndPointCalls) error {
+// 	return server.db.Create(req).Error
+// }
+
+// func (server *Server) GetEndPointCallesByUrl(uid uint32) ([]models.EndPointCalls, error) {
+// 	var EndPointCalles []models.EndPointCalls
+// 	if err := server.db.Model(&models.EndPointCalls{urlID: uid}).Where("url_id == ?", uid).Find(&EndPointCalles).Error; err != nil {
+// 		return nil, err
+// 	}
+// 	return EndPointCalles, nil
+// }

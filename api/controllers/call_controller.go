@@ -3,9 +3,11 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"http_monitoring/api/models"
-	"http_monitoring/api/utils/formaterror"
-	"http_monitoring/api/utils/responses"
+	"server/api/models"
+	"server/api/utils/formaterror"
+	"server/api/utils/responses"
+	"time"
+
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -22,6 +24,7 @@ func (server *Server) CreateCall(w http.ResponseWriter, r *http.Request) {
 	}
 	epc := models.EndPointCalls{}
 	err = json.Unmarshal(body, &epc)
+	fmt.Println(epc)
 	if err != nil {
 		responses.ERROR(w, http.StatusUnprocessableEntity, err)
 		return
@@ -63,11 +66,30 @@ func (server *Server) GetCalls(w http.ResponseWriter, r *http.Request) {
 	responses.JSON(w, http.StatusOK, epcs)
 }
 func (server *Server) GetCallsByTime(w http.ResponseWriter, r *http.Request) {
-
+	body, err := ioutil.ReadAll(r.Body)
+	fmt.Println(string(body))
+	if err != nil {
+		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+		return
+	}
+	type timeQuery struct {
+		urlID   string
+		StartTime time.Time 
+		EndTime time.Time 
+	}
+	tq := new(timeQuery)
+	err = json.Unmarshal(body, &tq)
+	if err != nil {
+		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+		return
+	}
+	// uid, err := strconv.ParseUint(tq.urlID, 10, 32)
+	// if err != nil {
+	// 	responses.ERROR(w, http.StatusBadRequest, err)
+	// 	return
+	// }
 	epc := models.EndPointCalls{}
-	vars := mux.Vars(r)
-
-	epcs, err := epc.FindCallsByTime(server.DB,vars["urlId"],vars["StartTime"],vars["EndTime"])
+	epcs, err := epc.FindCallsByTime(server.DB,tq.StartTime,tq.EndTime)
 	if err != nil {
 		responses.ERROR(w, http.StatusInternalServerError, err)
 		return

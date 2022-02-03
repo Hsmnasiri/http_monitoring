@@ -2,7 +2,7 @@ package api
 
 import (
 	"fmt"
-	"http_monitoring/api/controllers"
+	"github.com/Hsmnasiri/http_monitoring/api/controllers"
 	"log"
 	"os"
 

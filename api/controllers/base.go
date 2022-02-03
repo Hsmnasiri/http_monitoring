@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-
-	"http_monitoring/api/models"
+	"server/api/models"
 
 	"github.com/gorilla/mux"
 
@@ -35,7 +34,7 @@ func (server *Server) Initialize(Dbdriver, DbUser, DbPassword, DbPort, DbHost, D
 			fmt.Printf("We are connected to the %s database", Dbdriver)
 		}
 	}
-
+	fmt.Println("migration running")
 	server.DB.Debug().AutoMigrate(&models.User{}, &models.Urls{}) //database migration
 
 	server.Router = mux.NewRouter()

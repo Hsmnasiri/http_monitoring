@@ -1,7 +1,7 @@
 package seed
 
 import (
-	"http_monitoring/api/models"
+	"server/api/models"
 
 	"github.com/jinzhu/gorm"
 )

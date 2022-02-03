@@ -1,6 +1,6 @@
 package controllers
 
-import "http_monitoring/api/middlewares"
+import "server/api/middlewares"
 
 func (s *Server) initializeRoutes() {
 
@@ -21,4 +21,11 @@ func (s *Server) initializeRoutes() {
 	s.Router.HandleFunc("/urls/{id}", middlewares.SetMiddlewareJSON(s.Geturl)).Methods("GET")
 	s.Router.HandleFunc("/urls/{id}", middlewares.SetMiddlewareJSON(middlewares.SetMiddlewareAuthentication(s.Updateurl))).Methods("PUT")
 	s.Router.HandleFunc("/urls/{id}", middlewares.SetMiddlewareAuthentication(s.Deleteurl)).Methods("DELETE")
+
+
+	s.Router.HandleFunc("/calls", middlewares.SetMiddlewareJSON(s.CreateCall)).Methods("POST")
+	s.Router.HandleFunc("/calls", middlewares.SetMiddlewareJSON(s.GetCalls)).Methods("GET")
+	s.Router.HandleFunc("/calls/{id}", middlewares.SetMiddlewareJSON(s.GetCall)).Methods("GET")
+	s.Router.HandleFunc("/callsByTime", middlewares.SetMiddlewareJSON(s.GetCallsByTime)).Methods("POST")
+
 }

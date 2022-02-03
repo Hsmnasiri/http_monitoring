@@ -2,13 +2,13 @@ package controllers
 
 import (
 	"encoding/json"
-	"http_monitoring/api/auth"
-	"http_monitoring/api/models"
 	"io/ioutil"
 	"net/http"
+	"server/api/auth"
+	"server/api/models"
 
-	"http_monitoring/api/utils/formaterror"
-	"http_monitoring/api/utils/responses"
+	"server/api/utils/formaterror"
+	"server/api/utils/responses"
 
 	"golang.org/x/crypto/bcrypt"
 )

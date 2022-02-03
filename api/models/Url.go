@@ -2,7 +2,9 @@ package models
 
 import (
 	"errors"
+	"fmt"
 	"html"
+	"net/http"
 	"strings"
 	"time"
 
@@ -15,7 +17,10 @@ type Urls struct {
 	Type      string          `gorm:"DEFAULT:'GET'"`
 	Calls     []EndPointCalls `gorm:"ForeignKey:EndPointID"`
 	Owner    User      `json:"owner"`
-	OwnerID  uint32   `gorm:"not null" json:"owner_id"`
+	OwnerID  uint32   `sql:"type:int REFERENCES users(id)" json:"owner_id"`
+	Threshold    int
+	FailedTimes  int
+	SuccessTimes int
 	CreatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
@@ -25,6 +30,8 @@ func (p *Urls) Prepare() {
 	p.Name = html.EscapeString(strings.TrimSpace(p.Name))
 	p.URL = html.EscapeString(strings.TrimSpace(p.URL))
 	p.Owner = User{}
+	p.FailedTimes  =0
+	p.SuccessTimes =0
 	p.CreatedAt = time.Now()
 	p.UpdatedAt = time.Now()
 }
@@ -46,6 +53,9 @@ func (p *Urls) Validate() error {
 	if p.OwnerID < 1 {
 		return errors.New("Required owner")
 	}
+	if p.Threshold < 1 {
+		return errors.New("Required Threshold")
+	}
 	return nil
 }
 
@@ -53,11 +63,13 @@ func (url *Urls) SaveUrl(db *gorm.DB) (*Urls, error) {
 	var err error
 	err = db.Debug().Model(&Urls{}).Create(&url).Error
 	if err != nil {
+		fmt.Print("errrorrr")
 		return &Urls{}, err
 	}
 	if url.ID != 0 {
 		err = db.Debug().Model(&User{}).Where("id = ?", url.OwnerID).Take(&url.Owner).Error
 		if err != nil {
+			fmt.Print("errrorrr")
 			return &Urls{}, err
 		}
 	}
@@ -101,7 +113,8 @@ func (p *Urls) UpdateAUrl(db *gorm.DB) (*Urls, error) {
 
 	var err error
 
-	err = db.Debug().Model(&Urls{}).Where("id = ?", p.ID).Updates(Urls{Name: p.Name, URL: p.URL, UpdatedAt: time.Now()}).Error
+	err = db.Debug().Model(&Urls{}).Where("id = ?", p.ID).Updates(Urls{Threshold: p.Threshold,Name: p.Name, URL: p.URL, 
+		UpdatedAt: time.Now(),FailedTimes: p.FailedTimes,SuccessTimes: p.SuccessTimes}).Error
 	if err != nil {
 		return &Urls{}, err
 	}
@@ -120,9 +133,24 @@ func (p *Urls) DeleteAUrl(db *gorm.DB, pid uint64, uid uint32) (int64, error) {
 
 	if db.Error != nil {
 		if gorm.IsRecordNotFoundError(db.Error) {
-			return 0, errors.New("Urls not found")
+			return 0, errors.New("URL not found")
 		}
 		return 0, db.Error
 	}
 	return db.RowsAffected, nil
+}
+
+func (url *Urls) ShouldTriggerAlarm() bool {
+	return url.FailedTimes >= url.Threshold
+}
+
+func (url *Urls) SendRequest() (*EndPointCalls, error) {
+	resp, err := http.Get(url.URL)
+	req := new(EndPointCalls)
+	req.urlID = url.ID
+	if err != nil {
+		return req, err
+	}
+	req.ResponseCode = resp.StatusCode
+	return req, nil
 }

@@ -6,14 +6,13 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"server/api/auth"
+	"server/api/models"
+	"server/api/utils/formaterror"
+	"server/api/utils/responses"
 	"strconv"
 
 	"github.com/gorilla/mux"
-
-	"http_monitoring/api/auth"
-	"http_monitoring/api/models"
-	"http_monitoring/api/utils/formaterror"
-	"http_monitoring/api/utils/responses"
 )
 
 func (server *Server) CreateUser(w http.ResponseWriter, r *http.Request) {
