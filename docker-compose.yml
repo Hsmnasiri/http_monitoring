@@ -17,6 +17,7 @@ services:
       - "db_vol:/var/lib/postgresql/data"
     
   api:
+    container_name: ma_hommie_api
     depends_on:
       - "pgdb" 
     networks:
