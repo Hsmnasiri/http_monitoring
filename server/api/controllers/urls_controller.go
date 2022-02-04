@@ -6,11 +6,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"server/api/auth"
-	"server/api/models"
-	"server/api/utils/formaterror"
-	"server/api/utils/responses"
 	"strconv"
+
+	"github.com/Hsmnasiri/http_monitoring/server/api/auth"
+	"github.com/Hsmnasiri/http_monitoring/server/api/models"
+	"github.com/Hsmnasiri/http_monitoring/server/api/utils/formaterror"
+	"github.com/Hsmnasiri/http_monitoring/server/api/utils/responses"
 
 	"github.com/gorilla/mux"
 )
@@ -94,7 +95,6 @@ func (server *Server) Updateurl(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
- 
 	uid, err := auth.ExtractTokenID(r)
 	if err != nil {
 		responses.ERROR(w, http.StatusUnauthorized, errors.New("Unauthorized"))
@@ -109,19 +109,17 @@ func (server *Server) Updateurl(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
- 
 	if uid != url.OwnerID {
 		responses.ERROR(w, http.StatusUnauthorized, errors.New("Unauthorized"))
 		return
 	}
- 
+
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		responses.ERROR(w, http.StatusUnprocessableEntity, err)
 		return
 	}
 
- 
 	urlUpdate := models.Urls{}
 	err = json.Unmarshal(body, &urlUpdate)
 	if err != nil {
@@ -129,7 +127,6 @@ func (server *Server) Updateurl(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
- 
 	if uid != urlUpdate.OwnerID {
 		responses.ERROR(w, http.StatusUnauthorized, errors.New("Unauthorized"))
 		return
@@ -142,7 +139,7 @@ func (server *Server) Updateurl(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	urlUpdate.ID = url.ID 
+	urlUpdate.ID = url.ID
 
 	urlUpdated, err := urlUpdate.UpdateAUrl(server.DB)
 
@@ -158,21 +155,18 @@ func (server *Server) Deleteurl(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
 
-	 
 	pid, err := strconv.ParseUint(vars["id"], 10, 64)
 	if err != nil {
 		responses.ERROR(w, http.StatusBadRequest, err)
 		return
 	}
 
- 
 	uid, err := auth.ExtractTokenID(r)
 	if err != nil {
 		responses.ERROR(w, http.StatusUnauthorized, errors.New("Unauthorized"))
 		return
 	}
 
-	 
 	url := models.Urls{}
 	err = server.DB.Debug().Model(models.Urls{}).Where("id = ?", pid).Take(&url).Error
 	if err != nil {
@@ -180,7 +174,6 @@ func (server *Server) Deleteurl(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	 
 	if uid != url.OwnerID {
 		responses.ERROR(w, http.StatusUnauthorized, errors.New("Unauthorized"))
 		return
@@ -198,7 +191,6 @@ func (server *Server) Deleteurl(w http.ResponseWriter, r *http.Request) {
 // 	url.FailedTimes += 1
 // 	return server.Updateurl(url)
 // }
-
 
 // func (server *Server) IncrementSuccess(url *models.Urls) error {
 // 	url.SuccessTimes += 1

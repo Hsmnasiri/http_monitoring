@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"server/api/models"
+
+	"github.com/Hsmnasiri/http_monitoring/server/api/models"
 
 	"github.com/gorilla/mux"
 
@@ -22,7 +23,6 @@ type Server struct {
 func (server *Server) Initialize(Dbdriver, DbUser, DbPassword, DbPort, DbHost, DbName string) {
 
 	var err error
-
 
 	if Dbdriver == "postgres" {
 		DBURL := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s", DbHost, DbPort, DbUser, DbName, DbPassword)

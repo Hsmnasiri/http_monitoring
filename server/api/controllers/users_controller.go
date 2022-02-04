@@ -6,11 +6,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"server/api/auth"
-	"server/api/models"
-	"server/api/utils/formaterror"
-	"server/api/utils/responses"
 	"strconv"
+
+	"github.com/Hsmnasiri/http_monitoring/server/api/auth"
+	"github.com/Hsmnasiri/http_monitoring/server/api/models"
+	"github.com/Hsmnasiri/http_monitoring/server/api/utils/formaterror"
+	"github.com/Hsmnasiri/http_monitoring/server/api/utils/responses"
 
 	"github.com/gorilla/mux"
 )

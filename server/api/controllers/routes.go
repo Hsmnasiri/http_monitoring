@@ -1,6 +1,6 @@
 package controllers
 
-import "server/api/middlewares"
+import "github.com/Hsmnasiri/http_monitoring/server/api/middlewares"
 
 func (s *Server) initializeRoutes() {
 
@@ -15,13 +15,11 @@ func (s *Server) initializeRoutes() {
 	s.Router.HandleFunc("/users/{id}", middlewares.SetMiddlewareJSON(middlewares.SetMiddlewareAuthentication(s.UpdateUser))).Methods("PUT")
 	s.Router.HandleFunc("/users/{id}", middlewares.SetMiddlewareAuthentication(s.DeleteUser)).Methods("DELETE")
 
- 
 	s.Router.HandleFunc("/urls", middlewares.SetMiddlewareJSON(s.Createurl)).Methods("POST")
 	s.Router.HandleFunc("/urls", middlewares.SetMiddlewareJSON(s.Geturls)).Methods("GET")
 	s.Router.HandleFunc("/urls/{id}", middlewares.SetMiddlewareJSON(s.Geturl)).Methods("GET")
 	s.Router.HandleFunc("/urls/{id}", middlewares.SetMiddlewareJSON(middlewares.SetMiddlewareAuthentication(s.Updateurl))).Methods("PUT")
 	s.Router.HandleFunc("/urls/{id}", middlewares.SetMiddlewareAuthentication(s.Deleteurl)).Methods("DELETE")
-
 
 	s.Router.HandleFunc("/calls", middlewares.SetMiddlewareJSON(s.CreateCall)).Methods("POST")
 	s.Router.HandleFunc("/calls", middlewares.SetMiddlewareJSON(s.GetCalls)).Methods("GET")

@@ -2,8 +2,8 @@ package api
 
 import (
 	"fmt"
-	"log"
 	"os"
+	"time"
 
 	"github.com/Hsmnasiri/http_monitoring/server/api/controllers"
 
@@ -17,12 +17,13 @@ func Run() {
 	var err error
 	err = godotenv.Load()
 	if err != nil {
-		log.Fatalf("Error getting env , %v", err)
+		fmt.Println("Error getting env!")
+		time.Sleep(5 * time.Second)
+		server.Initialize("postgres", "heapifo", "he@p!fo", "5432", "0.0.0.0", "pgdb")
 	} else {
-		fmt.Println("We are getting the env values")
+		fmt.Println("We are getting the env values!")
+		server.Initialize(os.Getenv("DB_DRIVER"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT"), os.Getenv("DB_HOST"), os.Getenv("DB_NAME"))
 	}
-
-	server.Initialize(os.Getenv("DB_DRIVER"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT"), os.Getenv("DB_HOST"), os.Getenv("DB_NAME"))
 
 	//seed.Load(server.DB)
 

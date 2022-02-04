@@ -3,10 +3,11 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"server/api/models"
-	"server/api/utils/formaterror"
-	"server/api/utils/responses"
 	"time"
+
+	"github.com/Hsmnasiri/http_monitoring/server/api/models"
+	"github.com/Hsmnasiri/http_monitoring/server/api/utils/formaterror"
+	"github.com/Hsmnasiri/http_monitoring/server/api/utils/responses"
 
 	"io/ioutil"
 	"net/http"
@@ -73,9 +74,9 @@ func (server *Server) GetCallsByTime(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	type timeQuery struct {
-		urlID   string
-		StartTime time.Time 
-		EndTime time.Time 
+		urlID     string
+		StartTime time.Time
+		EndTime   time.Time
 	}
 	tq := new(timeQuery)
 	err = json.Unmarshal(body, &tq)
@@ -89,7 +90,7 @@ func (server *Server) GetCallsByTime(w http.ResponseWriter, r *http.Request) {
 	// 	return
 	// }
 	epc := models.EndPointCalls{}
-	epcs, err := epc.FindCallsByTime(server.DB,tq.StartTime,tq.EndTime)
+	epcs, err := epc.FindCallsByTime(server.DB, tq.StartTime, tq.EndTime)
 	if err != nil {
 		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
@@ -114,6 +115,3 @@ func (server *Server) GetCall(w http.ResponseWriter, r *http.Request) {
 	}
 	responses.JSON(w, http.StatusOK, CallReceived)
 }
-
-
-

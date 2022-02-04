@@ -1,30 +1,32 @@
 version: '3.5'
 
 services:
+
   pgdb:
     image: postgres
     restart: on-failure
+    ports:
+      - "5432:5432"
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: heapifo
+      POSTGRES_PASSWORD: he@p!fo
     networks:
       - main_net
     volumes:
       - "db_vol:/var/lib/postgresql/data"
-    ports:
-      - "5432:5432"
     
   api:
-    build: ./api/
+    depends_on:
+      - "pgdb" 
     networks:
       - main_net
-    depends_on:
-      - pgdb 
     volumes:
       - "static_vol:/app/static" 
-    
+    build: ./server/
+
+
   nginx:
-    restart: always
+    restart: on-failure
     build: ./nginx/
     ports:
       - 8080:8080

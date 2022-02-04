@@ -20,13 +20,25 @@ COPY . .
 RUN go build -o /docker-gs-ping
 
 
-FROM alpine
-RUN apk add --no-cache bash
+# FROM alpine
+# RUN apk add --no-cache bash
 
-WORKDIR /app
+# WORKDIR /app
 
-COPY --from=build /app .
+# COPY --from=build /app /app
 
-EXPOSE 3000
+# RUN chmod +x /app/main
 
-CMD exec /app
+# ENTRYPOINT ["/app/main"]
+
+FROM gcr.io/distroless/base-debian10
+
+WORKDIR /
+
+COPY --from=build /docker-gs-ping /docker-gs-ping
+
+EXPOSE 8080
+
+USER nonroot:nonroot
+
+ENTRYPOINT ["/docker-gs-ping"]

@@ -1,7 +1,7 @@
 package seed
 
 import (
-	"server/api/models"
+	"github.com/Hsmnasiri/http_monitoring/server/api/models"
 
 	"github.com/jinzhu/gorm"
 )
@@ -18,7 +18,6 @@ var users = []models.User{
 		Password: "password",
 	},
 }
- 
 
 func Load(db *gorm.DB) {
 
