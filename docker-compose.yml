@@ -3,13 +3,14 @@ version: '3.5'
 services:
 
   pgdb:
+    container_name: pgdb
     image: postgres
     restart: on-failure
     ports:
       - "5432:5432"
-    environment:
-      POSTGRES_USER: heapifo
-      POSTGRES_PASSWORD: he@p!fo
+    # environment:
+    #   POSTGRES_USER: heapifo
+    #   POSTGRES_PASSWORD: he@p!fo
     networks:
       - main_net
     volumes:
